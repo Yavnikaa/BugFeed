@@ -1,6 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from bugfeed.serializers import *
+from bugfeed.models import *
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the bugfeed index.")
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = Users.objects.all()
+    serializer_class = UserSerializer
+
+
 # Create your views here.
