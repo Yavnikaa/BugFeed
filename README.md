@@ -10,7 +10,7 @@ The dependencies for the backend are :
 
 **Build and Run**
 
- Clone the repository [link](https://github.com/Yavnikaa/BugFeed)
+ Clone the repository at [link](https://github.com/Yavnikaa/BugFeed)
 
     $ git clone 
 
@@ -71,6 +71,6 @@ The dependencies for the backend are :
 
   Open browser
 
-  Go to [link](localhost:8000/bugfeed) 
+  Go to localhost:8000/bugfeed
  
 
