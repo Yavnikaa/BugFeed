@@ -25,7 +25,41 @@ The dependencies for the backend are :
     $ source <env_name>/bin/activate 
     
     Virtual environment is set-up and activated.
+    
+    Install the project dependencies
+    $pip install -r requirements.txt
+   
+    
+    
+    Create a MySQL database and add the credentials to settings.py
+    
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_name',
+        'USER': 'name',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
+   Set-up Rich Text Field
+   
+   $Run pip install django dj-richtextfield
+   $Configure it in settings.py :
+   DJRICHTEXTFIELD_CONFIG = {
+    'js': ['//tinymce.cachefly.net/4.1/tinymce.min.js'],
+    'init_template': 'djrichtextfield/init/tinymce.js',
+    'settings': {
+        'menubar': False,
+        'plugins': 'link image',
+        'toolbar': 'bold italic | link image | removeformat',
+        'width': 700
+    }
+}
+
+    
     Migrate files
 
     $ python3 manage.py makemigrations bugfeed
