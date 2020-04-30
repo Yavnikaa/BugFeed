@@ -10,13 +10,13 @@ The dependencies for the backend are :
 
 **Build and Run**
 
-    Clone the repository [link](https://github.com/Yavnikaa/BugFeed)
+ Clone the repository [link](https://github.com/Yavnikaa/BugFeed)
 
     $ git clone 
 
     $ cd bugfeed
 
-    Set-up virtual environment
+  Set-up virtual environment
 
     $ sudo apt-get install python3-venv
 
@@ -24,14 +24,13 @@ The dependencies for the backend are :
 
     $ source <env_name>/bin/activate 
     
-    Virtual environment is set-up and activated.
+  Virtual environment is set-up and activated.
     
-    Install the project dependencies
-    $pip install -r requirements.txt
-   
-    
-    
-    Create a MySQL database and add the credentials to settings.py
+  Install the project dependencies
+         
+         $pip3 install -r requirements.txt
+         
+  Create a MySQL database and add the credentials to settings.py
     
     DATABASES = {
     'default': {
@@ -42,9 +41,9 @@ The dependencies for the backend are :
         'HOST': 'localhost',
         'PORT': '',
     }
-}
+    }
 
-    Set-up Rich Text Field
+ Set-up Rich Text Field
    
     $Run pip install django dj-richtextfield
     $Configure it in settings.py :
@@ -57,21 +56,21 @@ The dependencies for the backend are :
         'toolbar': 'bold italic | link image | removeformat',
         'width': 700
     }
-}
+    }
 
     
-    Migrate files
+ Migrate files
 
     $ python3 manage.py makemigrations bugfeed
 
     $ python3 manage.py migrate
 
-    Start the backend server
+  Start the backend server
 
     $ python3 manage.py runserver
 
-    Open browser
+  Open browser
 
-    Go to localhost:8000/bugfeed 
+  Go to (localhost:8000/bugfeed) 
  
 
