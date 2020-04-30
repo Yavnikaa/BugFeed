@@ -5,6 +5,9 @@ from bugfeed import views
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
+router.register(r'comments',views.CommentsViewSet)
+router.register(r'projects',views.ProjectsViewSet)
+router.register(r'teams', views.TeamViewSet)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [

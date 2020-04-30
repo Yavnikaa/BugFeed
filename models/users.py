@@ -12,3 +12,7 @@ class Users(models.Model):
     degree_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
 
+    @property
+    def user_description(self):
+        "Returns the user description."
+        return '%s %s , %s year' % (self.degree_name, self.branch_name, self.current_year)
