@@ -14,11 +14,21 @@ class Project_bugs(models.Model):
     status = models.CharField(max_length=25, choices=StatusValues.choices, default='RESOLVED')
     assigned_to = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True)
     reported_by = models.ForeignKey(Users, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
     project_bug = models.ForeignKey(Projects, on_delete=models.CASCADE)
+    timestamp =models.DateTimeField()
+    
 
     class Meta:
         ordering=['timestamp']
+
+
+    def sortby_status(self):
+        return Project_bugs.objects.order_by('timestamp')
+
+
+
+    
+
 
     
 

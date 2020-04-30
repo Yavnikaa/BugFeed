@@ -18,7 +18,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        exclude = ['display_picture', 'enrol_number', 'degree_name' , 'branch_name']
+        exclude = [ 'enrol_number', 'degree_name' , 'branch_name']
         read_only_fields = ['full_name']
 
 class BugsSerializer(serializers.ModelSerializer):
@@ -30,13 +30,13 @@ class BugsSerializer(serializers.ModelSerializer):
 class CommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
-        fields = '_all_'
+        fields = '__all__'
         read_only_fields = ['comment_by', 'comment_text', 'comment_time']
 
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
-        fields = '_all_'
+        fields = '__all__'
         
 
 
