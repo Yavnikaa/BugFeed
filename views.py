@@ -26,7 +26,10 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
     permission_classes=[permissions.IsAuthenticated, MasterPermissions]
 
-
+class BugsViewSet(viewsets.ModelViewSet):
+    queryset = Project_bugs.objects.all()
+    serializer_class = BugsSerializer
+    permission_classes= [permissions.IsAuthenticated , TeamPermissions]
 
 
 
