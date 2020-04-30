@@ -10,7 +10,7 @@ The dependencies for the backend are :
 
 **Build and Run**
 
-    Clone the repository [link] (https://github.com/Yavnikaa/BugFeed)
+    Clone the repository [link](https://github.com/Yavnikaa/BugFeed)
 
     $ git clone 
 
@@ -44,11 +44,11 @@ The dependencies for the backend are :
     }
 }
 
-   Set-up Rich Text Field
+    Set-up Rich Text Field
    
-   $Run pip install django dj-richtextfield
-   $Configure it in settings.py :
-   DJRICHTEXTFIELD_CONFIG = {
+    $Run pip install django dj-richtextfield
+    $Configure it in settings.py :
+    DJRICHTEXTFIELD_CONFIG = {
     'js': ['//tinymce.cachefly.net/4.1/tinymce.min.js'],
     'init_template': 'djrichtextfield/init/tinymce.js',
     'settings': {
