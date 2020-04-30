@@ -19,3 +19,11 @@ class MasterPermissions(permissions.BasePermission):
 
         else:
             return False
+
+class TeamPermissions(permissions.BasePermission):
+    def has_object_permissions(self,request,view,obj):
+        if ((Team.objects.filter(project_name)) == Projects.objects.filter(id)):
+            return True
+
+        else:
+            return False
