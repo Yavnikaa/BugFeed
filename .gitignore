@@ -2,4 +2,8 @@
 *.pyc
 __pycache__/**
 media
+<<<<<<< HEAD
 .env
+=======
+
+>>>>>>> 9618aa0a98b37f534a9ba33df2017306afd7ec3e
