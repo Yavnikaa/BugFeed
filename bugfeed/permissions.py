@@ -10,20 +10,20 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         return obj.owner == request.user
 
+
 class MasterPermissions(permissions.BasePermission):
     def has_object_permission(self,request,view,obj):
-        masters = request.users.objects.filter(is_master = True)
+        is_master = request.user.is_master
+        return is_master
 
-        if (users == masters):
-            return True
-
-        else:
-            return False
 
 class TeamPermissions(permissions.BasePermission):
-    def has_object_permissions(self,request,view,obj):
-        if ((Team.objects.filter(project_name)) == Projects.objects.filter(id)):
+    def has_object_permission(self,request,view,obj):
+        if request.method in permissions.SAFE_METHODS:
             return True
 
-        else:
-            return False
+        return obj.team_member_related == request.user
+
+
+#Used reverse-names to establish the relation and give permission
+
