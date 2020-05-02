@@ -8,14 +8,16 @@ class BugInline(admin.TabularInline):
 
 class TeamInline(admin.StackedInline):
     model = Team
-    fields= ['project_member']
-    extra = 2
+    fields= ['project_members']
+    extra =1
+    
 
 class ProjectAdmin(admin.ModelAdmin):
     fieldsets = [
             ('Project' , {'fields': ['project_name', 'project_link', 'priority_value']}),
             ('Date' , {'fields': ['project_date']})
     ]
+    
     inlines = [TeamInline, BugInline]
 
 admin.site.register (Projects,ProjectAdmin)
