@@ -45,7 +45,7 @@ The dependencies for the backend are :
 
  Set-up Rich Text Field
    
-    $Run pip install django dj-richtextfield
+    $Run pip install django-richtextfield
     $Configure it in settings.py :
     DJRICHTEXTFIELD_CONFIG = {
     'js': ['//tinymce.cachefly.net/4.1/tinymce.min.js'],

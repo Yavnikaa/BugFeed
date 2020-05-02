@@ -23,7 +23,7 @@ class Project_bugs(models.Model):
 
 
     def sortby_status(self):
-        return Project_bugs.objects.order_by('timestamp')
+        return Project_bugs.objects.order_by('status')
 
 
 
