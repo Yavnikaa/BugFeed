@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #121212;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  .site-container{
+    display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+    align-items: center;
+    margin-top:400px;
+  }
+  
+  
+  .logo-container{
+    background-image: url(./assets/bugfeed-logo.png);
+    background-repeat: no-repeat;
+    height:216px;
+    width:216px;
+  }
+  
+  .name-container{
+    background-color: #ffffff;
+    height:88px;
+    width: 500px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    font-family: Berlin Sans FB;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 72px;
+    line-height: 79px;
+    color: #121212;
+    }
+  
+  .login-container{
+    display:flex;
+    flex-direction: row;
+    margin-top:50px;
+  }
+  
+  .omniport-logo{
+    height:70px;
+    width:70px;
+    background-image:url(./assets/op-logo.png);
+  }
+  
+  .login-text{
+    background-color: #ffffff;
+    height:70px;
+    width: 450px;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 60px;
+    color: #121212;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  
+  

@@ -11,6 +11,7 @@ class Project_bugs(models.Model):
     bug_heading=models.CharField(max_length=30)
     bug_description=RichTextField(blank=True)
     category=models.ManyToManyField(Tags)
+    other_text=models.CharField(max_length=20, blank=True)
     status = models.CharField(max_length=25, choices=StatusValues.choices, default='RESOLVED')
     assigned_to = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True)
     reported_by = models.ForeignKey(Users, on_delete=models.CASCADE)

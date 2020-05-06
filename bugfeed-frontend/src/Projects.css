@@ -1,0 +1,36 @@
+.navbar-container{
+    width : 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    background-color: #121212;
+}
+
+.logo-container{
+    height:50px;
+    width:50px;
+}
+
+.logo-text{
+font-family: Berlin Sans FB;
+font-style: normal;
+font-weight: normal;
+font-size: 30px;
+line-height: 50px;
+color: #E5E5E5;
+padding-left: 10px;
+}
+
+.icon-home{
+    width: 38px;
+    height: 32px;
+    padding-left: 1100px;
+    padding-top: 10px;
+}
+
+.icon-settings{
+    width:38px;
+    height:32px;
+    padding-left:1150px;
+    padding-top: 10px;
+}
