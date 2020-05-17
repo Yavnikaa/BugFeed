@@ -1,6 +1,6 @@
 import React , {Component} from 'react';
 import ReactDOM from 'react-dom';
-import './Projects.css';
+import './css/Projects.css';
 import { Helmet } from 'react-helmet';
 import Logo from './assets/bugfeed-logo.png'
 import Home from './assets/home-icon.png'

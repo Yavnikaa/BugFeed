@@ -23,7 +23,7 @@ body {
   
   
   .logo-container{
-    background-image: url(./assets/bugfeed-logo.png);
+    background-image: url(../assets/bugfeed-logo.png);
     background-repeat: no-repeat;
     height:216px;
     width:216px;
@@ -54,7 +54,7 @@ body {
   .omniport-logo{
     height:70px;
     width:70px;
-    background-image:url(./assets/op-logo.png);
+    background-image:url(../assets/op-logo.png);
   }
   
   .login-text{

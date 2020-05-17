@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './Homepage.css';
+import './css/Homepage.css';
 
 const element = (
     <div class='site-container'>
