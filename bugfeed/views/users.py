@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated
+
 from rest_framework import viewsets
 from bugfeed.serializers.users import UserSerializer
 from bugfeed.models.users import Users
@@ -14,12 +14,14 @@ from django.conf import settings
 class UserViewSet(viewsets.ModelViewSet):
     queryset = Users.objects.all()
     serializer_class = UserSerializer
-    permission_classes =[IsAuthenticated&MasterPermissions]
+    permission_classes =[MasterPermissions]
 
 
     @action(methods=['post', 'options', 'get',], detail=False, url_name='onlogin', url_path='onlogin')
     def on_login(self, request):
         code = self.request.query_params.get('code')
+        print(code)
+
         #GETTING THE AUTHORISATION CODE
         url = 'https://internet.channeli.in/open_auth/token/'
         data = {
@@ -33,11 +35,14 @@ class UserViewSet(viewsets.ModelViewSet):
         acs_token = user_data['access_token']
         refresh_token=user_data['refresh_token']
         expires_in = user_data['expires_in']
+        print(acs_token)
+
         #GET ACCESS TOKEN
         headers={
                 'Authorization':'Bearer ' + acs_token
                 }
-        user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers).json()
+        user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers)
+        return HttpResponse(user_data)
 
         #CHECK IF TOKEN EXPIRED
         def expires_in(acs_token):

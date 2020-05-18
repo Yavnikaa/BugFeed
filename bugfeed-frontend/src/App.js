@@ -1,9 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-const Homepage = lazy(() => import('./Homepage'));
+
+const Homepage = lazy(() => import('./container-components/Homepage'));
 const Projects = lazy(() => import('./Projects'));
-const NewProject = lazy(()=> import ('./Newproject'));
 
 const App = () => (
   <Router>
@@ -11,7 +11,6 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Homepage}/>
         <Route exact path="/projects" component={Projects}/>
-        <Route exact path="/newproject" component={NewProject}/>
       </Switch>
     </Suspense>
   </Router>
