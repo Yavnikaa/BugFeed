@@ -1,0 +1,71 @@
+.page-container{
+    display:flex;
+    flex-direction:row ;
+    margin-top: 100px;
+    margin-left: 80px;
+}
+
+.main-heading{
+
+font-family: Berlin Sans FB;
+font-style: normal;
+font-weight: normal;
+font-size: 28px;
+line-height: 50px;
+color: #302F2F;
+
+}
+
+hr{
+border: 3px lightgrey
+}
+
+.form-container{
+    display:flex;
+    flex-direction:row ;
+    margin-top: 40px;
+}
+
+
+
+.form-label{
+    font-family: Berlin Sans FB;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 50px;
+    color:#121212;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.form-field{
+    width: 590px;
+    height: 45px;
+    background: #FEFDFD;
+    border: 1px solid #302F2F;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-left: 260px;
+    
+}
+
+.input-set{
+    display:flex;
+    flex-direction: column;
+    }
+
+.text-field{
+    width:590px;
+    height:180px;
+    background: #FEFDFD;
+    border: 1px solid #302F2F;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-left: 260px;
+}
+
+.drop-down{
+    margin-top:40px;
+    margin-bottom: 20px;
+}
