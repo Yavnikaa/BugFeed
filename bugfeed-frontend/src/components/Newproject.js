@@ -3,7 +3,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import { Dropdown } from 'semantic-ui-react'
 import axios from 'axios';
 import '../css/Newproject.css'
-import {urlProjectApi,urlUserApi,urlProjectsApp} from '../urls'
+import {urlProjectApi,urlUserApi,urlWikimediaApi,urlProjectsApp} from '../urls'
 
 class AddProject extends Component{
     constructor(props){
@@ -15,15 +15,16 @@ class AddProject extends Component{
                 project_name:'',
                 project_wiki:'',
                 project_link:'',
-                created_by:'',
+                priority_value:'',
                 project_members:[]
             },
-            loaded:false
+            loaded:false,
+            users : []
         }
     }
 
     componentDidMount(){
-        axios.get(urlUserApi()).then(axios.spread((initialData,projectMembers)=>{
+        axios.get(urlUserApi()).then(axios.spread((initialData, imgMembers)=>{
             initialData=initialData.data
             this.setState({
                 method:'patch',
@@ -33,10 +34,11 @@ class AddProject extends Component{
                     project_name:initialData.project_name,
                     project_wiki:initialData.project_wiki,
                     project_link:initialData.project_link,
-                    created_by:initialData.created_by,
+                    priority_value:initialData.priority_value,
                     project_members:initialData.project_members
                 },
-                loaded:true
+                loaded:true,
+                users : imgMembers
             })
         }))
     }
@@ -62,14 +64,13 @@ class AddProject extends Component{
         const {data}=this.state
         if (data.project_name && 
             data.project_link && 
-            data.created_by && 
             data.project_members
             ){
             var dataEntered= new dataEntered()
             dataEntered.append('project_name',data.project_name)
             dataEntered.append('project_wiki',data.project_wiki)
             dataEntered.append('project_link',data.project_link)
-            dataEntered.append('created_by',data.created_by)
+            dataEntered.append('priority_value',data.priority_value)
             for(let project_member=0;project_member<data.project_members.length;++project_member) {
                 dataEntered.append('project_members', Number(data.project_members[project_member]));
                   }
@@ -77,10 +78,7 @@ class AddProject extends Component{
          let headers = {
             'Content-Type': 'multipart/form-data',
             }
-            
-            
-
-           axios({
+          axios({
                method: this.state.method,
                url: this.state.url,
                data: dataEntered,
@@ -106,11 +104,36 @@ class AddProject extends Component{
          }
 
 
+         handleUpload = (callback, value, meta) => {
+          window.addEventListener('message', (event) => {
+            const { path } = event.data
+            const data = {
+              path,
+            }
+            const headers = {
+              'Content-Type': 'application/json',
+            }
+            if(path) {
+              axios({
+                method: 'post',
+                url: urlWikimediaApi(),
+                data: data,
+                headers: headers,
+              }).then(response => {
+                const { path } = response.data
+                callback(path)
+              })
+            }
+          })    
+        }
+
+
     render(){
         const img_members=this.state.users.map(users=>({
           value : users.id,
           text: users.full_name
         }))
+        const values = ('High','Low','Moderate','Released')
         if (this.state.loaded){
             return(
                 <div className='page-container'>
@@ -169,17 +192,20 @@ class AddProject extends Component{
                   {text: 'C', value: 'c'},
                   {text: 'C++', value: 'cpp'}
               ],
-                branding: false,}}
+                branding: false,
+                file_picker_callback: (callback, value, meta) => {
+                  this.handleUpload(callback, value, meta)
+                },
+                }}
                 onEditorChange={this.handleEditorChange}/>
                   </div>
 
                   <div className='input-set'>
-                    <Dropdown
-                    placeholder='Select who created the project' fluid selection options={img_members}
-                    value={this.state.data.created_by} onChange={event=>{this.handleChange(event)}} required
-                    label='Project created by' className='drop-down'
-                    />
-                   </div>
+                    <Dropdown 
+                    placeholder='Mark the priority of the project' search required selection
+                    label='Priority Value' className='drop-down' value={this.state.data.priority_value}
+                    option={values} onChange={event=>{this.handleChange(event)}}></Dropdown>
+                  </div>
 
                    <div className='input-set'>
                      <Dropdown 
@@ -197,8 +223,9 @@ class AddProject extends Component{
               />
                   </div>
 
-                  <button className='cancel-button'>Cancel</button>
-                  <button className='submit-button' onClick={this.handlePost}>Submit
+
+                  <button className='cancel-button' onClick={this.history.push('http://localhost:3000/projects/')}>Cancel</button>
+                  <button className='submit-button' onClick={this.handlePost}>Create New Project
                   {this.state.method === 'post' ? 'Add Project' :'Update Project'
                   }</button>
 

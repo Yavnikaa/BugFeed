@@ -13,4 +13,5 @@ router.register(r'bugs', views.BugsViewSet)
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('', include(router.urls)),
+    path('wiki_media/',views.Wiki_Media.as_view()),
 ]

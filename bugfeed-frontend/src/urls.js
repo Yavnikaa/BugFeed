@@ -16,6 +16,10 @@ export function urlTeamApi(){
     return `${urlApiBase()}teams/`
 }
 
+export function urlWikimediaApi(){
+    return `${urlApiBase()}wiki_media/`
+}
+
 //Frontend
 
 export function urlAppBase(){

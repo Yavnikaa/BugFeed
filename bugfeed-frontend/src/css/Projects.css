@@ -6,6 +6,7 @@
     background-color: #121212;
 }
 
+
 .logo-container{
     height:50px;
     width:50px;
@@ -41,10 +42,17 @@ padding-left: 10px;
     height:45px;
 }
 
+.page-container{
+    margin-left:100px;
+    margin-right:100px;
+    margin-top: 52px;
+    margin-bottom:52px;
+    background-color: #FEFDFD;
+}
+
 .heading-container{
     display:flex;
     flex-direction: row;
-    margin-top:60px;
 }
 
 .Project-container{
@@ -54,7 +62,7 @@ padding-left: 10px;
     width: 346px;
     height: 60px;
     background: #302F2F;
-    margin-left:115px;
+    margin-left:15px;
     font-family: Berlin Sans FB;
     font-style: normal;
     font-weight: normal;
@@ -97,4 +105,12 @@ padding-left: 10px;
     color: #FEFDFD;
     padding-inline-start: 74px;
 
+}
+
+.cardsdisplay{
+display : grid;
+grid-row-gap: 48px;
+grid-column-gap: 48px;
+grid-template-columns: auto auto auto auto;
+grid-template-rows: auto auto auto ;
 }

@@ -1,0 +1,81 @@
+.card{
+width: 400px;
+height: 250px;
+background: #FEFDFD;
+border: 2px solid #121212;
+box-sizing: border-box;
+border-radius: 20px;
+display:flex;
+flex-direction: row;
+margin-top:48px;
+margin-left:56px;
+margin-inline-start: 24px;
+margin-inline-end: 24px;
+}
+
+.card-title{
+    display:flex;
+    flex-direction: column;
+}
+
+.card-heading{
+font-family: Berlin Sans FB;
+font-style: normal;
+font-weight: normal;
+font-size: 36px;
+line-height: 42px;
+color: #121212;
+margin-bottom: 24px;
+}
+
+.dot{
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left:130px;
+  }
+
+
+.card-link{
+font-family: Oxygen;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 16px;
+color: #7C6F6F;
+margin-bottom:20px;
+}
+
+.card-text{
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color:#121212;
+    margin-bottom: 20px;
+}
+
+.card-button{
+    width: 156px;
+    height: 34px;
+    background: #FFFFFF;
+    border: 1px solid #121212;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-family: Oxygen;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #121212;
+    text-align: center;
+    margin-top:28px;
+    margin-bottom:20px;
+    margin-left: 30px;
+}
+
+
+
+

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+        'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,8 @@ INSTALLED_APPS = [
     'djrichtextfield',
     'rest_framework',
     'corsheaders',
+    
+    
 
 ]
 
@@ -74,7 +77,9 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "assignment.routing.application"
 WSGI_APPLICATION = 'assignment.wsgi.application'
+
 
 CORS_ORIGIN_ALLOW_ALL = False
 
