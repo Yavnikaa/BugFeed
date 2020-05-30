@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
 const Homepage = lazy(() => import('./container-components/Homepage'));
-const ProjectsPage = lazy(() => import('./components/Projects'));
+const ProjectsPage = lazy(() => import('./container-components/Projects'));
 const AddProject = lazy(() => import ('./components/Newproject'));
 
 const App = () => (
