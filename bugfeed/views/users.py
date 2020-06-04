@@ -28,10 +28,12 @@ class UserViewSet(viewsets.ModelViewSet):
                 'client_id':'h8nIeSqFsa0RMKZ8mJp0eGk0ojYbcpK9scDV7Nq5',
                 'client_secret':'T1y57ZPENADJ4dQZgSIuhNoGNeIkjzXCmyyn4Pbuw1Va0jl09tVjSB9ZcYtnfq2BUdvqhHkiodKt5VI93fInszV0fx5k1R3wJhIAOaDrtI2h4k97Oo0HSC37d5U45gBw',
                 'grant_type':'authorization_code',
-                'redirect_url':'http://127.0.0.1:8000/bugfeed/',
+                'redirect_url':'http://127.0.0.1:8000/bugfeed/users/onlogin/',
                 'code': code
-                } 
+                }
+            
         user_data = requests.post(url=url, data=data).json()
+        print(user_data)
         acs_token = user_data['access_token']
         refresh_token=user_data['refresh_token']
         expires_in = user_data['expires_in']
@@ -126,20 +128,16 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response({'status': 'User Created', 'access_token': acs_token}, status=status.HTTP_202_ACCEPTED)
             else:
                 return Response({'status': 'User not a member of IMG'}, status=status.HTTP_401_UNAUTHORIZED)
-
-        login(request=request, user=user)
+            
+        user.access_token = acs_token
+        user.save()
         return Response({'Status': 'User Exists', 'access_token': acs_token})
-    @action(methods=['post', 'options', ], detail=False, url_name='login', url_path='login')
-    def login(self, request):
-
-        data = self.request.data
-        token = data['access_token']
-
-        try:
-            user = Users.objects.get(access_token=token)
-        except Users.DoesNotExist:
-            return Response({'status': 'User does not exist in database'}, status=status.HTTP_403_FORBIDDEN)
-        login(request=request, user=user)
-        return Response({'status': 'User found'}, status=status.HTTP_202_ACCEPTED)
-
+    
+    @action(methods = ['get',], detail=False, url_path='current_user', url_name='current_user')
+    def get_current_user_data(self, request):
+        user = request.user
+        if not(user.full_name == ''):
+            return Response({'Response':'Logged In'})
+        else:
+            return Response({'Response':'No Current User'})
 
