@@ -10,11 +10,13 @@ from django.http import HttpResponse
 from datetime import timedelta
 from django.utils import timezone
 from django.conf import settings
+from rest_framework.response import Response
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = Users.objects.all()
     serializer_class = UserSerializer
-    permission_classes =[MasterPermissions]
+   #permission_classes =[MasterPermissions]
 
 
     @action(methods=['post', 'options', 'get',], detail=False, url_name='onlogin', url_path='onlogin')
@@ -89,6 +91,7 @@ class UserViewSet(viewsets.ModelViewSet):
         #CHECK IF USER EXISTS
         try:
             user = Users.objects.get(enrol_number=user_data['student']['enrolmentNumber'])
+            print('try user exist')
         except Users.DoesNotExist:
             # CHECK IF A PART OF IMG OR NOT
             is_img_member = False
@@ -113,7 +116,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 newUser = Users(enrol_number = enrol_number,
                                 email=email, 
                                 first_name = first_name, 
-                                full_name=full_name, 
+                                username=full_name, 
                                 is_master = is_master, 
                                 access_token = acs_token, 
                                 refresh_token=refresh_token,
@@ -136,7 +139,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(methods = ['get',], detail=False, url_path='current_user', url_name='current_user')
     def get_current_user_data(self, request):
         user = request.user
-        if not(user.full_name == ''):
+        if not(user.username == ''):
             return Response({'Response':'Logged In'})
         else:
             return Response({'Response':'No Current User'})

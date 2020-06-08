@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 from djrichtextfield.models import RichTextField
 from bugfeed.models.users import Users
+from django.conf import settings
 import datetime
 
 class Projects(models.Model):
@@ -10,7 +11,7 @@ class Projects(models.Model):
     project_name = models.CharField(max_length=35)
     project_wiki = RichTextField()
     project_date = models.DateTimeField(editable=False)
-    created_by = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="owner",editable=False)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="owner",editable=False)
     project_link = models.URLField(default='')
     priority_value = models.CharField(max_length=10, choices=PriorityValues.choices, default='MODERATE')
     updated_date = models.DateTimeField(editable=False, null=True)

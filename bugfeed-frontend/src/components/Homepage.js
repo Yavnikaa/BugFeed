@@ -39,7 +39,6 @@ class Homepage extends Component {
         axios({
             url: 'http://127.0.0.1:8000/users/current_user/',
             method: 'get',
-            withCredentials: true,
         }).then((response) => {
             console.log(response.data['Response'])
             if(response.data['Response'] === "No Current User"){

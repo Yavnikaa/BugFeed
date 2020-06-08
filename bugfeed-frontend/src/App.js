@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 const Homepage = lazy(() => import('./components/Homepage'));
 const Login = lazy(() => import ('./components/onLogin'));
 const ProjectsPage = lazy(() => import('./container-components/Projects'));
-const AddProject = lazy(() => import ('./components/Newproject'));
+const AddProject = lazy(() => import ('./container-components/Addproject'));
 
 const App = () => (
   <Router>

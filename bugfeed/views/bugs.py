@@ -8,7 +8,7 @@ from bugfeed.permissions import TeamPermissions
 class BugsViewSet(viewsets.ModelViewSet):
     queryset = Project_bugs.objects.all()
     serializer_class = BugsSerializer
-    permission_classes= [IsAuthenticated&TeamPermissions]
+   # permission_classes= [IsAuthenticated&TeamPermissions]
 
 
 

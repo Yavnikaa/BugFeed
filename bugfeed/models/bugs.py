@@ -3,7 +3,7 @@ from djrichtextfield.models import RichTextField
 from bugfeed.models.projects import Projects
 from bugfeed.models.teams import Team
 from bugfeed.models.tags import Tags
-from bugfeed.models.users import Users
+from django.conf import settings
 
 class Project_bugs(models.Model):
     StatusValues = models.TextChoices('StatusValues', 'PENDING RESOLVED TO_BE_DISCUSSED')
@@ -14,7 +14,7 @@ class Project_bugs(models.Model):
     other_text=models.CharField(max_length=20, blank=True)
     status = models.CharField(max_length=25, choices=StatusValues.choices, default='RESOLVED')
     assigned_to = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True)
-    reported_by = models.ForeignKey(Users, on_delete=models.CASCADE)
+    reported_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project_bug = models.ForeignKey(Projects, on_delete=models.CASCADE)
     timestamp =models.DateTimeField()
     

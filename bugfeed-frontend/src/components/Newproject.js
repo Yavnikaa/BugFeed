@@ -18,30 +18,30 @@ class AddProject extends Component{
                 priority_value:'',
                 project_members:[]
             },
-            loaded:false,
+            loaded:true,
             users : []
         }
     }
 
-    componentDidMount(){
-        axios.get(urlUserApi()).then(axios.spread((initialData, imgMembers)=>{
-            initialData=initialData.data
-            this.setState({
-                method:'patch',
-                url:urlProjectApi(),
-                data:{
-                    ...this.state.data,
-                    project_name:initialData.project_name,
-                    project_wiki:initialData.project_wiki,
-                    project_link:initialData.project_link,
-                    priority_value:initialData.priority_value,
-                    project_members:initialData.project_members
-                },
-                loaded:true,
-                users : imgMembers
-            })
-        }))
-    }
+    // componentDidMount(){
+    //     axios.get(urlUserApi()).then(axios.spread((initialData, imgMembers)=>{
+    //         initialData=initialData.data
+    //         this.setState({
+    //             method:'patch',
+    //             url:urlProjectApi(),
+    //             data:{
+    //                 ...this.state.data,
+    //                 project_name:initialData.project_name,
+    //                 project_wiki:initialData.project_wiki,
+    //                 project_link:initialData.project_link,
+    //                 priority_value:initialData.priority_value,
+    //                 project_members:initialData.project_members
+    //             },
+    //             loaded:true,
+    //             users : imgMembers
+    //         })
+    //     }))
+    // }
 
     handleChange = e => {
         let name = e.target.name
@@ -52,6 +52,10 @@ class AddProject extends Component{
           },
         })
       }
+
+    redirect(){
+      window.location='http://localhost:3000/projects/'
+    }
 
     
   handleEditorChange = content => {
@@ -224,7 +228,7 @@ class AddProject extends Component{
                   </div>
 
 
-                  <button className='cancel-button' onClick={this.history.push('http://localhost:3000/projects/')}>Cancel</button>
+                  <button className='cancel-button' onClick={this.redirect}>Cancel</button>
                   <button className='submit-button' onClick={this.handlePost}>Create New Project
                   {this.state.method === 'post' ? 'Add Project' :'Update Project'
                   }</button>

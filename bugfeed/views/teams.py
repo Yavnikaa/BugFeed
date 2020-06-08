@@ -7,7 +7,7 @@ from bugfeed.permissions import MasterPermissions
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
-    permission_classes=[IsAuthenticated&MasterPermissions]
+    #permission_classes=[IsAuthenticated&MasterPermissions]
 
 
 

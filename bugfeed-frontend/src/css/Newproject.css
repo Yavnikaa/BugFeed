@@ -1,6 +1,6 @@
 .page-container{
     display:flex;
-    flex-direction:row ;
+    flex-direction:column ;
     margin-top: 100px;
     margin-left: 80px;
 }
@@ -22,7 +22,7 @@ border: 3px lightgrey
 
 .form-container{
     display:flex;
-    flex-direction:row ;
+    flex-direction:column ;
     margin-top: 40px;
 }
 

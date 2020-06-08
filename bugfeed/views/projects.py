@@ -9,7 +9,7 @@ from bugfeed.permissions import IsOwnerOrReadOnly
 class ProjectsViewSet(viewsets.ModelViewSet):
     queryset = Projects.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [IsAuthenticated&IsOwnerOrReadOnly]
+   # permission_classes = [IsAuthenticated&IsOwnerOrReadOnly]
 
     def post(self, request , project_members):
         projects = self.request.POST.pop('projects')

@@ -87,6 +87,8 @@ CORS_ORIGIN_WHITELIST = (
       'http://localhost:3000',
 )
 
+AUTH_USER_MODEL = 'bugfeed.Users'
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 

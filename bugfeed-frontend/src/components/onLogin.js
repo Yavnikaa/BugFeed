@@ -25,7 +25,6 @@ class OnLogin extends Component{
                 headers:{
                     'Content-Type':'application/json',
                 },
-                withCredentials: true,
                 data:{
                     code: params['code']
                 }
