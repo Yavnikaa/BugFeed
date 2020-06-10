@@ -21,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(methods=['post', 'options', 'get',], detail=False, url_name='onlogin', url_path='onlogin')
     def on_login(self, request):
-        code = self.request.query_params.get('code')
+        code = self.request.POST.get('code')
         print(code)
 
         #GETTING THE AUTHORISATION CODE
@@ -34,11 +34,12 @@ class UserViewSet(viewsets.ModelViewSet):
                 'code': code
                 }
             
-        user_data = requests.post(url=url, data=data).json()
-        print(user_data)
-        acs_token = user_data['access_token']
-        refresh_token=user_data['refresh_token']
-        expires_in = user_data['expires_in']
+        auth_data = requests.post(url=url, data=data).json()
+        #print(auth_data)
+
+        acs_token = auth_data["access_token"]
+        refresh_token= auth_data["refresh_token"]
+        expires_in = auth_data["expires_in"]
         print(acs_token)
 
         #GET ACCESS TOKEN
@@ -46,7 +47,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 'Authorization':'Bearer ' + acs_token
                 }
         user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers)
-        return HttpResponse(user_data)
+       # return HttpResponse(user_data)
 
         #CHECK IF TOKEN EXPIRED
         def expires_in(acs_token):
@@ -74,10 +75,10 @@ class UserViewSet(viewsets.ModelViewSet):
                 'grant_type':'refresh_token',
                 'refresh_token': refresh_token
                 }
-            user_data = requests.post(url=url, data=data).json()
+            auth_data = requests.post(url=url, data=data).json()
 
-        acs_token=user_data['access_token']
-        refresh_token=user_data['refresh_token']
+        acs_token=auth_data['access_token']
+        refresh_token= auth_data['refresh_token']
 
         headers={
                 'Authorization':'Bearer ' + acs_token
@@ -87,16 +88,20 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 
-        #return HttpResponse(user_data)
+       #return HttpResponse(user_data)
+
         #CHECK IF USER EXISTS
+
+        print(user_data.json())
         try:
+            user_data = user_data.json()
             user = Users.objects.get(enrol_number=user_data['student']['enrolmentNumber'])
-            print('try user exist')
+        
         except Users.DoesNotExist:
             # CHECK IF A PART OF IMG OR NOT
             is_img_member = False
             for role in user_data["person"]["roles"]:
-                if role["roles"] == "Maintainer":
+                if role["role"] == "Maintainer":
                     is_img_member = True
                     break
             if is_img_member:
