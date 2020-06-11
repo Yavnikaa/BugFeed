@@ -1,5 +1,6 @@
 
 from rest_framework import viewsets
+from rest_framework import status
 from bugfeed.serializers.users import UserSerializer
 from bugfeed.models.users import Users
 from bugfeed.permissions import MasterPermissions
@@ -21,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(methods=['post', 'options', 'get',], detail=False, url_name='onlogin', url_path='onlogin')
     def on_login(self, request):
-        code = self.request.POST.get('code')
+        code = self.request.GET.get('code')
         print(code)
 
         #GETTING THE AUTHORISATION CODE
@@ -50,40 +51,41 @@ class UserViewSet(viewsets.ModelViewSet):
        # return HttpResponse(user_data)
 
         #CHECK IF TOKEN EXPIRED
-        def expires_in(acs_token):
-            time_elapsed = timezone.now() - acs_token.created
-            left_time = timedelta(seconds = settings.TOKEN_EXPIRED_AFTER_SECONDS) - time_elapsed
-            return left_time
+        #def expires_in(acs_token):
+            #time_elapsed = timezone.now() - acs_token.created
+            #left_time = timedelta(seconds = settings.TOKEN_EXPIRED_AFTER_SECONDS) - time_elapsed
+            #return left_time
 
 # token checker if token expired or not
-        def is_token_expired(acs_token):
-            return expires_in(acs_token) < timedelta(seconds = 0)
+        #def is_token_expired(acs_token):
+            #if (expires_in(acs_token) < timedelta(seconds = 0)):
+                #return true
+            #else:
+                #return false
 
 # if token is expired new token will be established
 # If token is expired then it will be removed
-        def token_expire_handler(acs_token):
-            is_expired = is_token_expired(acs_token)
-        if is_expired:
-            acs_token.delete() 
+        #if (is_token_expired(acs_token)):
+            #acs_token.delete() 
             
         #GET ACCESS TOKEN FROM REFRESH TOKEN
-        if is_expired:
-            url = 'https://internet.channeli.in/open_auth/token/'
-            data = {
-                'client_id':'h8nIeSqFsa0RMKZ8mJp0eGk0ojYbcpK9scDV7Nq5',
-                'client_secret':'T1y57ZPENADJ4dQZgSIuhNoGNeIkjzXCmyyn4Pbuw1Va0jl09tVjSB9ZcYtnfq2BUdvqhHkiodKt5VI93fInszV0fx5k1R3wJhIAOaDrtI2h4k97Oo0HSC37d5U45gBw',
-                'grant_type':'refresh_token',
-                'refresh_token': refresh_token
-                }
-            auth_data = requests.post(url=url, data=data).json()
+        #if (is_token_expired(acs_token)):
+            #url = 'https://internet.channeli.in/open_auth/token/'
+            #data = {
+              #  'client_id':'h8nIeSqFsa0RMKZ8mJp0eGk0ojYbcpK9scDV7Nq5',
+               # 'client_secret':'T1y57ZPENADJ4dQZgSIuhNoGNeIkjzXCmyyn4Pbuw1Va0jl09tVjSB9ZcYtnfq2BUdvqhHkiodKt5VI93fInszV0fx5k1R3wJhIAOaDrtI2h4k97Oo0HSC37d5U45gBw',
+                #'grant_type':'refresh_token',
+                #'refresh_token': refresh_token
+               # }
+            #auth_data = requests.post(url=url, data=data).json()
 
-        acs_token=auth_data['access_token']
-        refresh_token= auth_data['refresh_token']
+        #acs_token=auth_data['access_token']
+        #refresh_token= auth_data['refresh_token']
 
-        headers={
-                'Authorization':'Bearer ' + acs_token
-                }
-        user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers).json()
+        #headers={
+               # 'Authorization':'Bearer ' + acs_token
+                #}
+        #user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers).json()
 
 
 
@@ -106,20 +108,18 @@ class UserViewSet(viewsets.ModelViewSet):
                     break
             if is_img_member:
                 #CREATE USER
-                enrol_number = user_data["student"]["enrolment_number"]
-                email = user_data["contactInformation"]["instituteWebmailAddress"]
-                first_name = user_data["person"]["short_name"]
-                full_name = user_data["person"]["full_name"]
-                current_year = user_data["student"]["current_year"]
-                branch_name=user_data["student"]["branch"]["name"]
-                degree_name=user_data["student"]["branch"]["degree"]["name"]
-                display_picture = user_data["person"]["display_picture"]
+                enrol_number = user_data["student"]["enrolmentNumber"]
+                first_name = user_data["person"]["shortName"]
+                full_name = user_data["person"]["fullName"]
+                current_year = user_data["student"]["currentYear"]
+                branch_name=user_data["student"]["branch name"]
+                degree_name=user_data["student"]["branch degree name"]
+                display_picture = user_data["person"]["displayPicture"]
                 is_master = True
-                if user_data['student']['current_year'] <= 3:
+                if user_data['student']['currentYear'] <= 3:
                     is_master = False
 
                 newUser = Users(enrol_number = enrol_number,
-                                email=email, 
                                 first_name = first_name, 
                                 username=full_name, 
                                 is_master = is_master, 

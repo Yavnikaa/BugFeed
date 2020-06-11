@@ -7,7 +7,7 @@ class Users(AbstractUser):
     enrol_number = models.IntegerField(unique=True)
     branch_name = models.CharField(max_length=80)
     current_year = models.PositiveSmallIntegerField()
-    degree_name = models.CharField(max_length=30)
+    degree_name = models.CharField(max_length=80)
     is_active = models.BooleanField(default=True)
     access_token = models.CharField(max_length=100, default='', blank=True)
     refresh_token = models.CharField(max_length=100, default='', blank=True)
