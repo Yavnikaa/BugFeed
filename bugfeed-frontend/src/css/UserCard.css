@@ -1,0 +1,33 @@
+.card{
+    display:'flex';
+    width: 320px;
+    height: 205px;
+    background: #FEFDFD;
+    border: 2px solid #4392EF;
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding-inline-start: 20px;
+}
+
+.heading{
+    margin-top: 20px;
+    display:'flex';
+    flex-direction: column;
+    align-items: flex-start;
+    width: 400px;
+    height: 46px;
+    background: #4392EF;
+    text-align: center ;
+    font-family: Berlin Sans FB;
+    font-style: normal;
+    font-weight: normal;
+    line-height:44px;
+    font-size: 40px;
+    color: #ffffff;
+    margin-bottom: 40px;
+    
+}
+
+.container{
+    margin-inline-start: 80px;
+}
