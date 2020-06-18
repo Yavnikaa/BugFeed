@@ -3,6 +3,10 @@ from rest_framework import viewsets
 from rest_framework import status
 from bugfeed.serializers.users import UserSerializer
 from bugfeed.models.users import Users
+from bugfeed.serializers.teams import TeamSerializer
+from bugfeed.models.teams import Team
+from bugfeed.serializers.bugs import BugsSerializer
+from bugfeed.models.bugs import Project_bugs
 from bugfeed.permissions import MasterPermissions
 from rest_framework.decorators import action
 import requests
@@ -19,36 +23,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
    #permission_classes =[MasterPermissions]
 
-
-    @action(methods=['post', 'options', 'get',], detail=False, url_name='onlogin', url_path='onlogin')
-    def on_login(self, request):
-        code = self.request.GET.get('code')
-        print(code)
-
-        #GETTING THE AUTHORISATION CODE
-        url = 'https://internet.channeli.in/open_auth/token/'
-        data = {
-                'client_id':'h8nIeSqFsa0RMKZ8mJp0eGk0ojYbcpK9scDV7Nq5',
-                'client_secret':'T1y57ZPENADJ4dQZgSIuhNoGNeIkjzXCmyyn4Pbuw1Va0jl09tVjSB9ZcYtnfq2BUdvqhHkiodKt5VI93fInszV0fx5k1R3wJhIAOaDrtI2h4k97Oo0HSC37d5U45gBw',
-                'grant_type':'authorization_code',
-                'redirect_url':'http://127.0.0.1:8000/bugfeed/users/onlogin/',
-                'code': code
-                }
-            
-        auth_data = requests.post(url=url, data=data).json()
-        #print(auth_data)
-
-        acs_token = auth_data["access_token"]
-        refresh_token= auth_data["refresh_token"]
-        expires_in = auth_data["expires_in"]
-        print(acs_token)
-
-        #GET ACCESS TOKEN
-        headers={
-                'Authorization':'Bearer ' + acs_token
-                }
-        user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers)
-       # return HttpResponse(user_data)
 
         #CHECK IF TOKEN EXPIRED
         #def expires_in(acs_token):
@@ -85,61 +59,7 @@ class UserViewSet(viewsets.ModelViewSet):
         #headers={
                # 'Authorization':'Bearer ' + acs_token
                 #}
-        #user_data = requests.get(url='https://internet.channeli.in/open_auth/get_user_data/', headers=headers).json()
-
-
-
-
-       #return HttpResponse(user_data)
-
-        #CHECK IF USER EXISTS
-
-        print(user_data.json())
-        try:
-            user_data = user_data.json()
-            user = Users.objects.get(enrol_number=user_data['student']['enrolmentNumber'])
-        
-        except Users.DoesNotExist:
-            # CHECK IF A PART OF IMG OR NOT
-            is_img_member = False
-            for role in user_data["person"]["roles"]:
-                if role["role"] == "Maintainer":
-                    is_img_member = True
-                    break
-            if is_img_member:
-                #CREATE USER
-                enrol_number = user_data["student"]["enrolmentNumber"]
-                first_name = user_data["person"]["shortName"]
-                full_name = user_data["person"]["fullName"]
-                current_year = user_data["student"]["currentYear"]
-                branch_name=user_data["student"]["branch name"]
-                degree_name=user_data["student"]["branch degree name"]
-                display_picture = user_data["person"]["displayPicture"]
-                is_master = True
-                if user_data['student']['currentYear'] <= 3:
-                    is_master = False
-
-                newUser = Users(enrol_number = enrol_number,
-                                first_name = first_name, 
-                                username=full_name, 
-                                is_master = is_master, 
-                                access_token = acs_token, 
-                                refresh_token=refresh_token,
-                                current_year=current_year,
-                                branch_name=branch_name,
-                                degree_name=degree_name, 
-                                display_picture=display_picture)
-                newUser.is_staff = True
-                newUser.is_admin = True
-                newUser.save()
-
-                return Response({'status': 'User Created', 'access_token': acs_token}, status=status.HTTP_202_ACCEPTED)
-            else:
-                return Response({'status': 'User not a member of IMG'}, status=status.HTTP_401_UNAUTHORIZED)
-            
-        user.access_token = acs_token
-        user.save()
-        return Response({'Status': 'User Exists', 'access_token': acs_token})
+    
     
     @action(methods = ['get',], detail=False, url_path='current_user', url_name='current_user')
     def get_current_user_data(self, request):
@@ -149,3 +69,17 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response({'Response':'No Current User'})
 
+    @action(methods = ['post', 'options', 'get'], detail=False, url_path='user_page', url_name='user_page')
+    def get_user_page(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        user_projects = Team.objects.filter(project_members=user.pk)
+        serializer2 = TeamSerializer(user_projects, many=True)
+        user_assigned_issues = Project_bugs.objects.filter(assigned_to=user.pk)
+        serializer3 = BugsSerializer(user_assigned_issues, many=True)
+        user_reported_issues = Project_bugs.objects.filter(reported_by=user.pk)
+        serializer4 = BugsSerializer(user_reported_issues, many=True)
+        return Response({'user_data': serializer.data,
+                         'projects': serializer2.data,
+                         'assigned_issues': serializer3.data,
+                         'reported_issues': serializer4.data})

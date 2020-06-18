@@ -1,25 +1,47 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import { Provider } from 'react-redux'
+
+import Login from './components/Login'
+import Auth from './components/auth'
+import ProjectsPage from './container-components/Projects'
+import UserPage from './container-components/UserPage'
+import Logout from './components/Logout'
+
+import store from './store/index'
 
 
-const Homepage = lazy(() => import('./components/Homepage'));
-const Login = lazy(() => import ('./components/onLogin'));
-const ProjectsPage = lazy(() => import('./container-components/Projects'));
-const UserPage = lazy(() => import('./container-components/UserPage'));
-const AddProject = lazy(() => import ('./container-components/Addproject'));
+function App() {
+  return (
+    <Provider store = {store}>
+      <Router>
 
+    
+        <Switch>
 
-const App = () => (
-  <Router>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Switch>
-        <Route exact path="/" component={Homepage}/>
-        <Route exact path ='/onlogin' component={Login}/>
-        <Route exact path="/projects" component={ProjectsPage}/>
-        <Route exact path="/add_project" component={AddProject}/>
-        <Route exact path="/userpage" component={UserPage}/>
-      </Switch>
-    </Suspense>
-  </Router>
-);
-export default App;
+          <Route exact path = '/'>
+              <Login/>
+          </Route>
+
+          <Route path = '/auth' component = {Auth}/>
+
+          <Route exact path = '/projects' component = {ProjectsPage}/>
+
+          <Route exact path = '/users' component = {UserPage}/>
+
+          <Route exact path = '/logout' component = {Logout}/>
+
+        </Switch>
+
+      
+
+      </Router>
+    </Provider>
+  );
+}
+
+export default App

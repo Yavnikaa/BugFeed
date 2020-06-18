@@ -1,0 +1,12 @@
+export const CLIENT_ID = 'h8nIeSqFsa0RMKZ8mJp0eGk0ojYbcpK9scDV7Nq5'
+export const REDIRECT_URL = 'http://localhost:3000/'
+export const GET_ACCESS_CODE_URL = 'https://internet.channeli.in/oauth/authorise/'
+export const LOGIN_URL = 'http://localhost:8000/bugfeed/auth/'
+export const MY_URL = 'http://localhost:8000/bugfeed/my/'
+//export const ALL_PROJECTS_URL = 'http://localhost:8000/tracker/project/'
+//export const ISSUE_URL = 'http://localhost:8000/tracker/issue/'
+export const LOGIN_HOME_URL = 'http://localhost:3000/'
+export const LOGOUT_URL = 'http://localhost:8000/tracker/api-auth/logout/'
+export const GET_USER_URL = 'http://localhost:8000/tracker/user'
+
+export const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED'
