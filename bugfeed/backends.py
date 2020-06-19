@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.backends import BaseBackend
-from bugfeed.models.user import Users
+from bugfeed.models.users import Users
 
 class AuthBackend(BaseBackend):
     '''

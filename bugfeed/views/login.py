@@ -28,7 +28,8 @@ class LoginView(KnoxLoginView):
                         break
                 
                 if is_img_member:
-                    username = (data_response['person']['fullName'])
+                    userId = (data_response['userId'])
+                    name = (data_response['person']['fullName']).strip()
                     enrol_number = (data_response["student"]["enrolmentNumber"])
                     current_year = (data_response["student"]["currentYear"])
                     branch_name= (data_response["student"]["branch name"])
@@ -38,10 +39,14 @@ class LoginView(KnoxLoginView):
                     if data_response['student']['currentYear'] <= 3:
                         is_master = False
                     
+                    try:
+                        username = name[:name.index(' ')]+'_'+str(userId)
+                    except ValueError:
+                        username = name+'_'+str(userId)
                     
                     try:
-                        requestUser = Users.objects.get(username = username)
-                        serializer = AuthTokenSerializer(data={'username': requestUser.username})
+                        requestUser = Users.objects.get(userId = userId)
+                        serializer = AuthTokenSerializer(data={'userId': requestUser.userId})
                         serializer.is_valid(raise_exception=True)
                         user = serializer.validated_data['user']
                         login(request, user)
@@ -50,6 +55,8 @@ class LoginView(KnoxLoginView):
 
                     except Users.DoesNotExist:
                         requestUser = Users(
+                            userId=userId,
+                            name=name,
                             username=username,
                             enrol_number = enrol_number,
                             is_master = is_master,
@@ -59,7 +66,7 @@ class LoginView(KnoxLoginView):
                             display_picture=display_picture
                             )
                         requestUser.save()
-                        serializer = AuthTokenSerializer(data={'username': requestUser.username})
+                        serializer = AuthTokenSerializer(data={'userId': requestUser.userId})
                         serializer.is_valid(raise_exception=True)
                         user = serializer.validated_data['user']
                         login(request, user)

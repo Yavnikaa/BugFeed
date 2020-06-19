@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from django.urls import reverse
 from django.contrib.auth import login
+from bugfeed.models.users import Users
 from bugfeed.serializers.users import UserSerializer
 from bugfeed.serializers.auth import AuthSerializer
 import requests
@@ -28,7 +29,7 @@ class AuthView(APIView):
 
             if login_response.status_code == 200:
                 login_response = login_response.json()
-                user = User.objects.get(username =login_response['person']['fullName'])
+                user = Users.objects.get(userId =login_response["user"]["userId"])
                 user_serializer = UserSerializer(user)
                 user_data = {'token':login_response['token'], 'expiry':login_response['expiry'], 'user':user_serializer.data}
                 return Response (user_data)
