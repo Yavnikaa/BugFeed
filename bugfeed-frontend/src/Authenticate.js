@@ -6,7 +6,7 @@ import { setUser } from './actions/userActions'
 
 const authenticate = () => {
     let state = store.getState()
-    if (state.user.item.token){
+    if (state.token){
         return true
     }
     else if(localStorage.getItem('token')){

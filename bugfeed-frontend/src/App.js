@@ -11,6 +11,8 @@ import Auth from './components/auth'
 import ProjectsPage from './container-components/Projects'
 import UserPage from './container-components/UserPage'
 import Logout from './components/Logout'
+import AddProject from './components/Newproject'
+//import Navbar from './components/Navbar'
 
 import store from './store/index'
 
@@ -19,6 +21,8 @@ function App() {
   return (
     <Provider store = {store}>
       <Router>
+
+     
 
     
         <Switch>
@@ -34,6 +38,8 @@ function App() {
           <Route exact path = '/users' component = {UserPage}/>
 
           <Route exact path = '/logout' component = {Logout}/>
+
+          <Route exact path = '/add_project' component = {AddProject}/>
 
         </Switch>
 

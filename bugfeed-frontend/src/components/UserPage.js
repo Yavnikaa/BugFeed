@@ -4,7 +4,6 @@ import {Card,Container,Menu,Segment, Icon} from 'semantic-ui-react'
 import UserCard from './UserCard.js'
 import {urlUserApi} from '../urls'
 
-import {Navbar} from './Navbar'
 
 class UserPage extends Component{
     constructor(props){
