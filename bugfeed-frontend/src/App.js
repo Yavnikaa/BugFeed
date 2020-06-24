@@ -12,7 +12,8 @@ import ProjectsPage from './container-components/Projects'
 import UserPage from './container-components/UserPage'
 import Logout from './components/Logout'
 import AddProject from './components/Newproject'
-//import Navbar from './components/Navbar'
+import ComposedClass from './components/Session.js'
+import Navbar from './components/Navbar'
 
 import store from './store/index'
 
@@ -21,15 +22,17 @@ function App() {
   return (
     <Provider store = {store}>
       <Router>
-
-     
-
+       
+       <Navbar></Navbar>
     
         <Switch>
+
 
           <Route exact path = '/'>
               <Login/>
           </Route>
+
+          <Route path="/test" component={ComposedClass} />
 
           <Route path = '/auth' component = {Auth}/>
 
@@ -40,6 +43,8 @@ function App() {
           <Route exact path = '/logout' component = {Logout}/>
 
           <Route exact path = '/add_project' component = {AddProject}/>
+
+         
 
         </Switch>
 

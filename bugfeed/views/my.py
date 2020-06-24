@@ -9,5 +9,5 @@ class MyViewSet(viewsets.ModelViewSet):
     #permission_classes = [IsAuthenticated, ReadOnly]
 
     def get_queryset(self):
-        queryset = Users.objects.filter(username = self.request.user.username)
+        queryset = Users.objects.filter( userId = self.request.user.userId)
         return queryset
