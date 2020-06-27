@@ -50,6 +50,7 @@ class LoginView(KnoxLoginView):
                         serializer.is_valid(raise_exception=True)
                         user = serializer.validated_data['user']
                         login(request, user)
+                        print(request.user)
                         return super(LoginView, self).post(request, format=None)
                         
 
@@ -70,6 +71,7 @@ class LoginView(KnoxLoginView):
                         serializer.is_valid(raise_exception=True)
                         user = serializer.validated_data['user']
                         login(request, user)
+                        print(request.user)
                         return super(LoginView, self).post(request, format=None)
                     
                     else:

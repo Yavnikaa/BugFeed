@@ -6,8 +6,10 @@ from rest_framework import permissions
 
 class MyViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
-    #permission_classes = [IsAuthenticated, ReadOnly]
+    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        queryset = Users.objects.filter( userId = self.request.user.userId)
-        return queryset
+    # def get_queryset(self):
+    #     queryset = 
+    #     return queryset
+    def get_object(self):
+        return self.request.user

@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bugfeed',
-    'oauth2_provider',
     'djrichtextfield',
     'rest_framework',
     'corsheaders',
     'knox',
+    'oauth2_provider',
     
     
 
@@ -141,7 +141,7 @@ REST_FRAMEWORK = {
 
 # knox settings
 REST_KNOX = {
-  'TOKEN_TTL': timedelta(hours=10),
+  'TOKEN_TTL': timedelta(hours=24),
   'USER_SERIALIZER': 'knox.serializers.UserSerializer',
   'TOKEN_LIMIT_PER_USER': None,
   'AUTO_REFRESH': True,
@@ -154,10 +154,10 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
-}
+#OAUTH2_PROVIDER = {
+   # this is the list of available scopes
+#    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+#}
 
 
 
