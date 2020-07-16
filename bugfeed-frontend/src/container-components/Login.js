@@ -1,5 +1,5 @@
 import React from 'react';
-import { CLIENT_ID, REDIRECT_URL, GET_ACCESS_CODE_URL } from '../Const'
+import * as api_links from '../APILinks';
 import '../css/Homepage.css';
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
                    <div className='name-container'>BugFeed </div>
                   <div className='login-container'>
                      <div className='omniport-logo'></div>
-                    <a href={GET_ACCESS_CODE_URL+'?client_id='+CLIENT_ID+'&redirect_url='+REDIRECT_URL} className='login-text'>Login with omniport</a>
+                    <a href={api_links.OMNIPORT_OAUTH} className='login-text'>Login with omniport</a>
                    </div>
                  </div>   
             )

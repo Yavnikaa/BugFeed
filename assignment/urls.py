@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls import url
 from django.contrib.auth.models import User,Group
 admin.autodiscover()
 
@@ -25,7 +28,11 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, Token
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bugfeed/', include('bugfeed.urls')),
-     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    #path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 
-    path('djrichtextfield/', include('djrichtextfield.urls'))
+    path('djrichtextfield/', include('djrichtextfield.urls')),
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

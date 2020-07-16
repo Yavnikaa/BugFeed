@@ -43,11 +43,10 @@ INSTALLED_APPS = [
     'djrichtextfield',
     'rest_framework',
     'corsheaders',
-    'knox',
     'oauth2_provider',
+    'rest_framework.authtoken',
+    'rest_auth',
     
-    
-
 ]
 
 MIDDLEWARE = [
@@ -93,10 +92,14 @@ CHANNEL_LAYERS = {
 
 
 CORS_ORIGIN_ALLOW_ALL = False
-
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
-      'http://localhost:3000',
+       'http://localhost:3000',
+       'http://localhost:8000',
+       # 'http://internet.channeli.in',
+       "http://127.0.0.1:3000"
 )
+SITE_ID = 1
 
 AUTH_USER_MODEL = 'bugfeed.Users'
 
@@ -144,17 +147,7 @@ DJRICHTEXTFIELD_CONFIG = {
     }
 }
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
-}
 
-# knox settings
-REST_KNOX = {
-  'TOKEN_TTL': timedelta(hours=24),
-  'USER_SERIALIZER': 'knox.serializers.UserSerializer',
-  'TOKEN_LIMIT_PER_USER': None,
-  'AUTO_REFRESH': True,
-}
 
 
 AUTHENTICATION_BACKENDS = (
@@ -163,10 +156,17 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-#OAUTH2_PROVIDER = {
+OAUTH2_PROVIDER = {
    # this is the list of available scopes
-#    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
-#}
+ 'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+}
+
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'bugfeed.serializers.token.TokenSerializer',
+}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 

@@ -1,12 +1,8 @@
 from rest_framework import serializers
 from bugfeed.models.projects import Projects
-from bugfeed.serializers.bugs import BugsSerializer
-
 from slugify import slugify
 
-class ProjectSerializer(serializers.ModelSerializer):
-
-    Bugs = BugsSerializer(source='bugs_set', many=True, read_only=True)
+class ProjectNameSlugSerializer(serializers.ModelSerializer):
     projectslug = serializers.SerializerMethodField('projectSlug')
 
     def projectSlug(self, obj):
@@ -14,11 +10,4 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Projects
-        exclude = ['project_wiki', 'project_link']
-        read_only_fields = ['project_date']
-
-
-    
-
-
-
+        fields = ['id', 'project_name', 'projectslug']

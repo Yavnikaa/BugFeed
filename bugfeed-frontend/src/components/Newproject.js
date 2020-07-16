@@ -1,6 +1,5 @@
 import React , {Component} from 'react';
 import { Editor } from '@tinymce/tinymce-react'
-import authenticate from '../Authenticate'
 import {Form} from 'semantic-ui-react'
 import axios from 'axios';
 import '../css/Newproject.css'
@@ -22,13 +21,13 @@ class AddProject extends Component{
         }
     }
 
-    componentDidMount(){
-      authenticate()
-      axios.get(GET_USER_URL)
-      .then(response => {
-          this.setState({userList: response.data})
-      })
-  }
+  //   componentDidMount(){
+  //     authenticate()
+  //     axios.get(GET_USER_URL)
+  //     .then(response => {
+  //         this.setState({userList: response.data})
+  //     })
+  // }
 
 
     handleChange = (e) => {

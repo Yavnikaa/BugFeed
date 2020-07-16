@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from bugfeed.models import *
+from bugfeed.models.users import Users 
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields ='__all__'
         read_only_fields = ['enrol_number']
+        exclude = ['access_token','refresh_token','password']
 
 
 

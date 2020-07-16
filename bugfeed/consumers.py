@@ -2,7 +2,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
-from knox.auth import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework import exceptions, HTTP_HEADER_ENCODING
 
 from bugfeed.models import Project_bugs, Comments

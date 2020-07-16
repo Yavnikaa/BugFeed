@@ -1,22 +1,36 @@
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework import viewsets,status
 from rest_framework.response import Response
 from bugfeed.serializers.projects import ProjectSerializer
 from bugfeed.models.projects import Projects
 from bugfeed.models.teams import Team
-from bugfeed.permissions import IsOwnerOrReadOnly
+from bugfeed.permissions import ProjectPermissions, MasterPermissions
 
 class ProjectsViewSet(viewsets.ModelViewSet):
     queryset = Projects.objects.all()
     serializer_class = ProjectSerializer
-   # permission_classes = [IsAuthenticated&IsOwnerOrReadOnly]
+   #permission_classes = [IsAuthenticated&(ProjectPermissions | MasterPermissions)]
+    authentication_classes = [TokenAuthentication, ]
+
+    def create(self, request, *args, **kwargs):
+        projects = request.data
+        projects['created_by'] = request.user.id
+        serializer = ProjectSerializer(data=projects)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request , project_members):
-        projects = self.request.POST.pop('projects')
-        teams = self.request.POST.pop('teams')
+        projects = self.request.POST('projects')
+        teams=self.request.POST('teams')
+        project = self.request.POST.pop('projects')
+        team = self.request.POST.pop('teams')
         
         try:
-            required_data = self.request.POST[data]
+            required_data = self.request.data
             projects_id = 0
             for project in projects:
                 project_name = required_data.pop('project_name')

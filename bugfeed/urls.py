@@ -1,23 +1,25 @@
 from django.urls import path, include
+from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
-from bugfeed import views
-from knox import views as knox_views
+from bugfeed.views import *
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'comments',views.CommentsViewSet)
-router.register(r'projects',views.ProjectsViewSet)
-router.register(r'teams', views.TeamViewSet)
-router.register(r'bugs', views.BugsViewSet)
-router.register(r'my', views.MyViewSet , basename='my')
+router.register(r'users', UserViewSet , basename='users')
+router.register(r'current_user',MyViewSet,basename='current_user')
+router.register(r'comments',CommentViewSet, basename='comments')
+router.register(r'projects',ProjectsViewSet , basename='projects')
+router.register(r'teams', TeamViewSet, basename='teams')
+router.register(r'bugs', BugsViewSet,basename='bugs')
+router.register(r'tags', TagViewSet, basename='tags')
+router.register(r'projectnameslug', ProjectNameSlugViewSet, basename='project_names_and_slugs')
+router.register(r'userByEnrNo', UserByEnrNoViewSet, basename='userByEnrNo')
+router.register(r'userbugs', UsersIssueTallyViewSet, basename='user_bugs')
+router.register(r'projectlogos', LogoViewSet, basename='project_logos')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('', include(router.urls)),
-    path('wiki_media/',views.Wiki_Media.as_view()),
-    path('auth/<code>', views.AuthView.as_view()),
-    path('api-auth/login/', views.LoginView.as_view(), name='knox_login'),
-    path('api-auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
-    path('api-auth/logoutall/', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),
+    path('wiki_media/',Wiki_Media.as_view()),
+    url(r'topdebuggers', TopDebuggersView.as_view()),
 ]

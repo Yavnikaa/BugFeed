@@ -5,5 +5,4 @@ from django.conf import settings
 
 class Likes(models.Model):
     liked_by=models.ManyToManyField(settings.AUTH_USER_MODEL)
-    likes_count=models.PositiveSmallIntegerField()
     bug_like = models.ForeignKey(Project_bugs, on_delete=models.CASCADE)
