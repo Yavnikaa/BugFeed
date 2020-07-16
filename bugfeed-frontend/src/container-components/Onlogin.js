@@ -19,7 +19,7 @@ function Onlogin(props) {
         console.log(params.code);
     
         axios({
-          method: 'GET',
+          method: 'POST',
           url: api_links.API_ROOT + 'users/onlogin/',
           headers: {
             'Content-Type': 'application/json'

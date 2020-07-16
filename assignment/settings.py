@@ -152,7 +152,7 @@ DJRICHTEXTFIELD_CONFIG = {
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default
-     'bugfeed.backends.AuthBackend',
+   #  'bugfeed.backends.AuthBackend',
 )
 
 
