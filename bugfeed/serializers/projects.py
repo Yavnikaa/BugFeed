@@ -14,8 +14,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Projects
-        exclude = ['project_wiki', 'project_link']
-        read_only_fields = ['project_date']
+        fields='__all__'
 
 
     

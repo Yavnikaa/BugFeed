@@ -7,6 +7,7 @@ from bugfeed.models.projects import Projects
 from bugfeed.models.teams import Team
 from bugfeed.permissions import ProjectPermissions, MasterPermissions
 
+
 class ProjectsViewSet(viewsets.ModelViewSet):
     queryset = Projects.objects.all()
     serializer_class = ProjectSerializer
@@ -14,23 +15,24 @@ class ProjectsViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication, ]
 
     def create(self, request, *args, **kwargs):
-        projects = request.data
-        projects['created_by'] = request.user.id
-        serializer = ProjectSerializer(data=projects)
+        project = request.data
+        project['created_by'] = request.user.id
+        serializer = ProjectSerializer(data=project)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+    
     def post(self, request , project_members):
-        projects = self.request.POST('projects')
-        teams=self.request.POST('teams')
-        project = self.request.POST.pop('projects')
-        team = self.request.POST.pop('teams')
+        projects = self.request.POST.pop('projects')
+        teams = self.request.POST.pop('teams')
+        data = request.data
         
         try:
-            required_data = self.request.data
+            required_data = self.request.POST[data]
             projects_id = 0
             for project in projects:
                 project_name = required_data.pop('project_name')
@@ -38,7 +40,6 @@ class ProjectsViewSet(viewsets.ModelViewSet):
                 created_by = required_data.pop('created_by')
                 project_link = required_data.pop('project_link')
                 project_wiki = required_data.pop('project_wiki')
-                updated_date = required_data.pop('updated_date')
                 priority_value = required_data.pop('priority_value')
 
                 Projects.objects.create(
@@ -47,7 +48,6 @@ class ProjectsViewSet(viewsets.ModelViewSet):
                         created_by=created_by,
                         project_link=project_link,
                         project_wiki=project_wiki,
-                        updated_date=updated_date,
                         priority_value=priority_value)
                 
                 projects_id +=1
@@ -70,7 +70,6 @@ class ProjectsViewSet(viewsets.ModelViewSet):
         
         except Exception as error:
             return Response(error, status=status.HTTP_400_BAD_REQUEST)
-
 
 
             

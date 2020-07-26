@@ -21,5 +21,4 @@ router.register(r'projectlogos', LogoViewSet, basename='project_logos')
 urlpatterns = [
     path('', include(router.urls)),
     path('wiki_media/',Wiki_Media.as_view()),
-    url(r'topdebuggers', TopDebuggersView.as_view()),
 ]

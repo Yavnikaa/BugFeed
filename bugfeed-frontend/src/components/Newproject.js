@@ -1,249 +1,228 @@
-import React , {Component} from 'react';
-import { Editor } from '@tinymce/tinymce-react'
-import {Form} from 'semantic-ui-react'
+import React , {useState,useEffect} from 'react';
 import axios from 'axios';
 import '../css/Newproject.css'
-import { connect } from 'react-redux'
-import { withRouter } from "react-router";
-import {GET_USER_URL} from '../Const'
-import {urlWikimediaApi} from '../urls'
+import * as api_links from '../APILinks';
+import { EditorState } from 'draft-js';
+import { DraftailEditor, BLOCK_TYPE, INLINE_STYLE } from 'draftail';
+import { stateToHTML } from 'draft-js-export-html';
 
-class AddProject extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-                project_name:'',
-                project_wiki:'',
-                project_link:'',
-                priority_value:'',
-                project_members:[],
-                userList : []
-        }
-    }
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
 
-  //   componentDidMount(){
-  //     authenticate()
-  //     axios.get(GET_USER_URL)
-  //     .then(response => {
-  //         this.setState({userList: response.data})
-  //     })
-  // }
+export default function NewProject(props){
+    const [formData,setFormData]=useState({
+        project_name : "",
+        project_link : "",
+        priority_value : "",
+    })
+
+    const handleFormChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevValue => ({
+          ...prevValue,
+          [name]: value
+        }));
+      }
+
+    const [project_members, setProjectMembers] = useState ([]);
+
+    const handleMembersChange = (event) => {
+        setProjectMembers(event.target.value);
+    };
 
 
-    handleChange = (e) => {
-        this.setState({[e.target.name] : e.target.value})
-        }
 
-    handleEditorChange = content => {
-      this.setState({ ...this.state, project_wiki: content },
-    )
-  }
+    const [userList, setUserList] = useState([]);
 
-    handleTeamChange = (event, {value}) => {
-      this.setState({project_members:value})
-  }
 
-    handlePriorityChange = (event,{value}) => {
-      this.setState({priority_value:value})
-    }
-
-    handleSubmit = (event) => {
-      event.preventDefault()
-
-      let formData = new FormData()
-
-      formData.append(
-        'project_name',
-        this.state.project_name
-      )
-
-      formData.append(
-        'project_wiki',
-        this.state.project_wiki
-      )
-
-      formData.append(
-        'project_link',
-        this.state.project_link
-      )
-
-      for(let i = 0; i < (this.state.project_members).length; i++){
-        formData.append(
-            'project_members',
-            this.state.team_member[i]
-        )
-
-      formData.append(
-        'priority_value',
-        this.state.priority_value
-      )
-      
-      axios.post('http://localhost:8000/bugfeed/projects/', formData )
-      .then(res => {
-          this.props.history.push('/projects/'+res.data.id)
+    async function fetchUserListFromAPI() {
+         axios.get(api_links.API_ROOT + 'users/')
+         .then(res => {
+             setUserList(res.data);
       })
-      .catch(err =>{
-          console.log(err)
-      })
+      .catch(err => console.log(err));
+  }
+  
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        let data = {
+              project_name: formData.project_name,
+              project_wiki: stateToHTML(editorState.getCurrentContent()),
+              project_link: formData.project_link,
+              priority_value: formData.priority_value,
+             };
+             
+        const token = localStorage.getItem('token');
 
-      
-    }
+        axios.defaults.headers = {
+               'Content-Type': 'application/json',
+               Authorization: 'Token  ' + token
+        }
 
+        axios.post(api_links.API_ROOT + 'projects/', data)
+        .then(res => {
+        setTimeout(() => {
+            if (res.status === 200) {
+                let project_id = res.data.id;
+                data = new FormData();
+                data.append('project', project_id);
+                data.append('project_members', project_members)
+                axios.defaults.headers = {
+                  'Content-Type': 'application/json',
+                  Authorization: 'Token  ' + token
+                }
+                axios.post(api_links.API_ROOT + 'teams/', data)
+                  .then(res => {
+                    console.log(res);
+                    window.location.reload();
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+               }
+            },2000);
+        window.location.reload()
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     
-    handleUpload = (callback, value, meta) => {
-      window.addEventListener('message', (event) => {
-            const { path } = event.data
-            const data = {
-              path,
-            }
-            const headers = {
-              'Content-Type': 'application/json',
-            }
-            if(path) {
-              axios({
-                method: 'post',
-                url: urlWikimediaApi(),
-                data: data,
-                headers: headers,
-              }).then(response => {
-                const { path } = response.data
-                callback(path)
-              })
-            }
-          })    
-        }
+    useEffect(() => {
+        fetchUserListFromAPI();
+      }, []);
 
-        render(){
-          var options =[]
-          if (this.state.userList[0]){
-            options = this.state.userList.map((user) => ({
-              key : user.id,
-              text: user.name + '' + user.enrol_number,
-              value: user.id
+    const priorityValues = ["HIGH", "MODERATE", "LOW", "RELEASED"]
 
-            }))
-          }
+    const [editorState, setEditorState]=useState(EditorState.createEmpty());
 
-          const tinyEditor = (
-            <Editor initialValue={this.state.project_wiki}
-            init={{
-              selector:'textarea',
-              plugins:
-              'autoresize'+
-          'contextmenu ' +
-          ' lists link table image codesample emoticons code charmap ' +
-          ' wordcount'+
-          'fullscreen'+
-          'insertdatetime'+
-          'spellchecker',
-          contextmenu:
-          'bold italic underline strikethrough | ' +
-          'superscript subscript | ' +
-          'link spellchecker',
-        toolbar1:
-          'formatselect | ' +
-          'bold italic underline strikethrough blockquote removeformat | ' +
-          'alignleft aligncenter alignright alignjustify',
-        toolbar2:
-          'undo redo | ' +
-          'bullist numlist outdent indent | ' +
-          'link unlink | ' +
-          'table image codesample charmap insertdatetime| ' +
-          'fullscreen',
-        toolbar3:
-          'fontselect fontsizeselect | spellchecker | emoticons',
-        relative_urls : false,
-        theme: 'modern',
-        menubar: true,
-        codesample_languages: [
-          {text: 'HTML/XML', value: 'markup'},
-          {text: 'JavaScript', value: 'javascript'},
-          {text: 'CSS', value: 'css'},
-          {text: 'PHP', value: 'php'},
-          {text: 'Python', value: 'python'},
-          {text: 'Java', value: 'java'},
-          {text: 'C', value: 'c'},
-          {text: 'C++', value: 'cpp'}
-      ],
-        branding: false,
-        file_picker_callback: (callback, value, meta) => {
-          this.handleUpload(callback, value, meta)
-        },
-        }}
-        onEditorChange={this.handleEditorChange}/>
-          )
-
-        const values = ('High','Low','Moderate','Released') 
-        
-        const form = (
-
-          <Form onSubmit = {this.handleSubmit} encType='multipart/form-data'>
-
-            <Form.Input 
-                    name = 'project_name' 
-                    placeholder = {'Your project name here'}
-                    label='Project Name:' 
-                    type = 'text' 
-                    onChange={this.handleChange}
-                    className = 'input_small'
-                     />
-
-            <Form.Field>
-                    <label>Project wiki:</label>
-                    {tinyEditor}
-            </Form.Field>
-
-            <Form.Input 
-                    name = 'project_link' 
-                    placeholder = {'Your project URL here'}
-                    label='Project Link:' 
-                    type = 'text' 
-                    onChange={this.handleChange}
-                     />
-
-             <Form.Dropdown
-                    name = 'project_members'
-                    label = 'Add team members:'
-                    placeholder='Add team members'
-                    multiple
-                    search
-                    selection
-                    options={options}
-                    className = 'input_small'
-                    onChange={this.handleTeamChange}
-                />
-
-             <Form.Dropdown
-                   name = 'priority_value'
-                   label = 'Set the priority of the project'
-                   placeholder=' Add priority value'
-                   search
-                   selection
-                   options = {values}
-                   className = 'input_small'
-                   onChange = {this.handlePriorityChange}
-                   />
-
-                <Form.Button positive> Create new project</Form.Button>
-            </Form>
-          )
-
-          return (
-            <div className='page-container'>
-            <header className='main-heading'> Create new project</header>
-            <div className = 'form-container'>
-            {form}
-            </div>
-            </div>
-            )
-      }
+    const handleRichTextChange = editorState => {
+      setEditorState(editorState);
     }
+    
 
-    const mapStateToProps = (state) => ({
-      user : state.user
-  })
-  
-    withRouter(AddProject)
-  
-    export default connect(mapStateToProps)(AddProject)
+    return (
+        <div className='page-container'>
+        <header className='main-heading'> Create new project</header>
+        <div className = 'form-container'>
+        <form noValidate onSubmit={handleFormSubmit}>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                name="project_name"
+                variant="outlined"
+                fullWidth
+                id="project_name"
+                label="Project Name"
+                value={formData.project_name}
+                onChange={handleFormChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} className="custom-form-outline-padding-none">
+              <Typography style={{ padding: "5px" }}>Project Wiki</Typography>
+              <DraftailEditor
+                editorState={editorState}
+                onChange={handleRichTextChange}
+                blockTypes={[
+                  { type: BLOCK_TYPE.HEADER_THREE },
+                  { type: BLOCK_TYPE.UNORDERED_LIST_ITEM },
+                  { type: BLOCK_TYPE.ORDERED_LIST_ITEM },
+                ]}
+                inlineStyles={[
+                  { type: INLINE_STYLE.BOLD },
+                  { type: INLINE_STYLE.ITALIC },
+                  { type: INLINE_STYLE.UNDERLINE },
+                  { type: INLINE_STYLE.CODE },
+                  { type: INLINE_STYLE.STRIKETHROUGH },
+                ]}
+              />
+            </Grid>
+
+            <Grid item xs={12} className="custom-form-outline">
+
+              <InputLabel id="demo-mutiple-chip-label" >Add Project Members</InputLabel>
+              <Select
+
+                labelId="mutiple-chip-label"
+                id="mutiple-chip"
+                multiple
+                value={project_members}
+                onChange={handleMembersChange}
+                input={<Input id="select-multiple-chip" />}
+                renderValue={(selected) => (
+                  <div >
+                    {selected.map((value) => (
+                      <Chip
+                        key={value}
+                        label={userList.filter((user, index) => user.id === value)[0].name}
+                        style={{ margin: '5px', borderRadius: '10px' }}
+                      />
+                    ))}
+                  </div>
+                )}
+
+              >
+                {userList.map((user) => (
+                  <MenuItem key={user.name} value={user.id}>
+                    {user.name}
+                  </MenuItem>
+                ))}
+              </Select>
+
+            </Grid>
+
+            <Grid item xs={12} className="custom-form-outline">
+
+              <InputLabel id="single-select-outlined-label">Priority Value</InputLabel>
+              <Select
+                labelId="single-select-outlined-label"
+                id="single-select-outlined"
+                value={formData.priority_value}
+                onChange={handleFormChange}
+                label="priority_value"
+                name="priority_value"
+              >
+                {priorityValues.map(option => <MenuItem value={option}>{option}</MenuItem>)}
+              </Select>
+
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                name="project_link"
+                variant="outlined"
+                fullWidth
+                id="project_link"
+                label="Project Link"
+                value={formData.project_link}
+                onChange={handleFormChange}
+              />
+            </Grid>
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              style={{ marginTop: "20px" }}
+              >
+              Create Project
+                </Button>
+
+             <a href='http://localhost:3000/' className='cancel-button'> Cancel</a>
+             </Grid>
+        </form>
+        </div>
+        </div>
+
+        
+    )
+}

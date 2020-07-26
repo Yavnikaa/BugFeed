@@ -46,12 +46,12 @@ class Wiki_Media(APIView):
                 f'{path}'
             )
 
-        response_data = {
+        media_data = {
                 'message':f'{path} moved to {dst_path}',
                 'path': response_path,
                 }
 
-        return Response(reponse_data, status=status.HTTP_201_CREATED)
+        return Response(media_data, status=status.HTTP_201_CREATED)
 
 
 

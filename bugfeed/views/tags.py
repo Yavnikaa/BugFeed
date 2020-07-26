@@ -9,5 +9,5 @@ from bugfeed.serializers.tags import TagSerializer
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     queryset = Tags.objects.all()
-    permission_classes = [IsAuthenticated & MasterPermissions]
+    #permission_classes = [IsAuthenticated & MasterPermissions]
     authentication_classes = [TokenAuthentication, ]

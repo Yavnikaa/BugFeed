@@ -73,7 +73,8 @@ border: 3px lightgrey
 
 .cancel-button{
     border-radius: 25px;
-    background-color: #F13131;
+    border-color:#F13131;
+    background-color: #FFFFFF;
     padding:20px 50px;
     text-align: center;
     display: inline-block;
@@ -84,7 +85,7 @@ border: 3px lightgrey
     font-weight: normal;
     font-size: 24px;
     line-height: 50px;
-    color: #FEFDFD;
+    color: #F13131;
     margin-bottom: 80px;
     margin-inline-start:800px ;
 }
@@ -103,7 +104,6 @@ border: 3px lightgrey
     font-size: 24px;
     line-height: 50px;
     color: #FEFDFD;
-    margin-bottom: 80px;
     margin-inline-start: 80px;
 }
 

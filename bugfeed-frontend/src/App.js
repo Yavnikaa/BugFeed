@@ -1,51 +1,34 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import { Provider } from 'react-redux'
-
-import Login from './container-components/Login'
-import ProjectsPage from './container-components/Projects'
-import UserPage from './container-components/UserPage'
-import AddProject from './components/Newproject'
-import Onlogin from './container-components/Onlogin'
-//import Navbar from './components/Navbar'
-
-import store from './store/index'
+import { connect } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import BaseRouter from './Routes';
+import * as actions from './actions/auth';
 
 
-function App() {
+
+const App = (props) => {
+
+  React.useEffect(() => {
+    props.onTryAutoSignup();
+  }, []);
+
   return (
-    <Provider store = {store}>
-      <Router>
-    
-        <Switch>
-
-
-          <Route exact path = '/login'>
-              <Login/>
-          </Route>
-
-
-          <Route path = '/onlogin' component = {Onlogin}/>
-
-          <Route exact path = '/projects' component = {ProjectsPage}/>
-
-          <Route exact path = '/users' component = {UserPage}/>
-
-          <Route exact path = '/add_project' component = {AddProject}/>
-
-         
-
-        </Switch>
-
-      
-
-      </Router>
-    </Provider>
+    <Router>
+    <BaseRouter />
+    </Router>
   );
 }
 
-export default App
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
