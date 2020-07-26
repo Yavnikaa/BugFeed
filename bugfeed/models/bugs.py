@@ -18,7 +18,7 @@ class Project_bugs(models.Model):
     reported_by = models.ForeignKey(Users, related_name='issue_creator', on_delete=models.CASCADE , null=True,)
     #null=True for debugging purposes
     project_bug = models.ForeignKey(Projects, on_delete=models.CASCADE)
-    timestamp =models.DateField(editable=False)
+    timestamp =models.DateField(editable=False,default=datetime.date.today)
     
     def save(self,*args, **kwargs):
         if not self.id:
