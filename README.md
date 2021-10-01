@@ -71,6 +71,6 @@ The dependencies for the backend are :
 
   Open browser
 
-  Go to localhost:8000/bugfeed
+  Go to localhost:8000/bugfeed/
  
 
